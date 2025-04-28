@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function DownloadPage() {
+function DownloadFile() {
   const [fileData, setFileData] = useState(null);
   const [fileId, setFileId] = useState('');
 
@@ -37,4 +37,4 @@ function DownloadPage() {
   );
 }
 
-export default DownloadPage;
+export default DownloadFile;
