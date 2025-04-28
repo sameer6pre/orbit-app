@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BASE_URL } from '../util';
 
-// Delete user
 export const deleteUser = async (userId) => {
-  const response = await axios.delete(`${BASE_URL}/delete-user`, {
+  const response = await axios.delete(`${BASE_URL}/delete-user/${userId}`, {
     withCredentials: true,
   });
 
@@ -14,10 +15,51 @@ export const deleteUser = async (userId) => {
   return response.data;
 };
 
+export const fetchUserProfile = async (userId) => {
+  const response = await axios.get(`${BASE_URL}/get-user/${userId}`);
+  return response.data;
+};
+
 function Profile() {
+  const [userData, setUserData] = useState({});
+  const [userId, setUserId] = useState('1');
+
+  useEffect(() => {
+    fetchUserProfile(userId).then((data) => {
+      setUserData(data);
+    }).catch((err) => {
+      console.error('Error fetching user profile:', err);
+    });
+  }, [userId]);
+
+  const handleDelete = () => {
+    deleteUser(userId)
+      .then((res) => {
+        alert('User deleted successfully!');
+      })
+      .catch((err) => {
+        console.error('Error deleting user:', err);
+      });
+  };
+
   return (
-    <button onClick={deleteUser(userId)}>Delete User</button>
-  )
+    <div>
+      <h1>Profile Page</h1>
+
+      <pre>{JSON.stringify(userData, null, 2)}</pre>
+
+      <input
+        type="text"
+        placeholder="Enter User ID"
+        value={userId}
+        onChange={(e) => setUserId(e.target.value)}
+      />
+
+      <button onClick={handleDelete}>
+        Delete User
+      </button>
+    </div>
+  );
 }
 
-export default Profile
+export default Profile;
