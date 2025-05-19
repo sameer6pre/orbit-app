@@ -5,21 +5,37 @@ function DownloadFile() {
   const [fileData, setFileData] = useState(null);
   const [fileId, setFileId] = useState('');
 
-  const handleDownload = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/${fileId}`);
-
-      setFileData(response.data);
-
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(new Blob([response.data], { type: 'application/octet-stream' }));
-      link.download = fileId; // File downloaded with ID
-      link.click();
-    } catch (error) {
-      console.error('Error downloading file:', error);
-      alert('Failed to download the file. Please try again.');
+async () => {
+  try {
+    // Validate and sanitize the fileId parameter
+    if (!isValidFileId(fileId)) {
+      throw new Error('Invalid file ID');
     }
-  };
+
+    const response = await axios.get(`${BASE_URL}/${fileId}`);
+
+    setFileData(response.data);
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(new Blob([response.data], { type: 'application/octet-stream' }));
+    link.download = sanitizeFileName(fileId); // Ensure the filename is safe
+    link.click();
+  } catch (error) {
+    console.error('Error downloading file:', error);
+    alert('Failed to download the file. Please try again.');
+  }
+}
+
+// Helper functions for validation and sanitization
+function isValidFileId(fileId) {
+  // Implement validation logic, e.g., regex check or database lookup
+  return /^[a-zA-Z0-9_-]+$/.test(fileId);
+}
+
+function sanitizeFileName(fileName) {
+  // Implement sanitization logic, e.g., remove unsafe characters
+  return fileName.replace(/[^a-zA-Z0-9_-]/g, '_');
+}
 
   return (
     <div>
