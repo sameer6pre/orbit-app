@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../util';
 
-export const deleteUser = async (userId) => {
+async (userId) => {
+  if (typeof userId !== 'string' || !/^[a-zA-Z0-9_-]+$/.test(userId)) {
+    throw new Error('Invalid userId format');
+  }
+
   const response = await axios.delete(`${BASE_URL}/delete-user/${userId}`, {
     withCredentials: true,
   });
@@ -13,7 +17,7 @@ export const deleteUser = async (userId) => {
   }
 
   return response.data;
-};
+}
 
 export const fetchUserProfile = async (userId) => {
   const response = await axios.get(`${BASE_URL}/get-user/${userId}`);
