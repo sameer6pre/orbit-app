@@ -6,16 +6,26 @@ function CommentsSection() {
   const [comment, setComment] = useState('');
   const [commentsList, setCommentsList] = useState([]);
 
-  useEffect(() => {
-    // Fetch all comments
-    axios.get(`${BASE_URL}/comments`)
-      .then(response => {
-        setCommentsList(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching comments:', error);
-      });
-  }, []);
+() => {
+  // Fetch all comments
+  const sanitizedBaseUrl = sanitizeUrl(BASE_URL); // Ensure BASE_URL is sanitized
+  axios.get(`${sanitizedBaseUrl}/comments`)
+    .then(response => {
+      setCommentsList(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching comments:', error);
+    });
+}
+
+function sanitizeUrl(url) {
+  // Implement URL sanitization logic here
+  // For example, ensure the URL matches a specific pattern or whitelist
+  if (!/^https?:\/\//.test(url)) {
+    throw new Error('Invalid URL');
+  }
+  return url;
+}
 
   const handleSubmit = (e) => {
     e.preventDefault();
