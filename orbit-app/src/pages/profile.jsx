@@ -15,10 +15,13 @@ export const deleteUser = async (userId) => {
   return response.data;
 };
 
-export const fetchUserProfile = async (userId) => {
-  const response = await axios.get(`${BASE_URL}/get-user/${userId}`);
+async (userId) => {
+  if (!/^[a-zA-Z0-9_-]+$/.test(userId)) { // Validate userId against a whitelist of allowed characters
+    throw new Error('Invalid userId');
+  }
+  const response = await axios.get(`${BASE_URL}/get-user/${encodeURIComponent(userId)}`); // Encode userId to prevent injection
   return response.data;
-};
+}
 
 function Profile() {
   const [userData, setUserData] = useState({});
