@@ -44,7 +44,17 @@ function BlogsPage() {
           type="text"
           placeholder="Blog title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+(e) => {
+    const sanitizedValue = sanitizeInput(e.target.value); // FIX: Sanitize the input to prevent XSS
+    setTitle(sanitizedValue);
+}
+
+// Example sanitizeInput function
+function sanitizeInput(input) {
+    const div = document.createElement('div');
+    div.innerText = input; // Escapes HTML special characters
+    return div.innerHTML;
+}
         />
         <textarea
           placeholder="Blog content"
