@@ -27,7 +27,15 @@ function DownloadFile() {
       <input
         type="text"
         value={fileId}
-        onChange={(e) => setFileId(e.target.value)}
+(e) => {
+  const sanitizedValue = sanitizeInput(e.target.value); // FIX: Sanitize the input
+  setFileId(sanitizedValue);
+}
+
+function sanitizeInput(input) {
+  // Example sanitization function
+  return input.replace(/[^a-zA-Z0-9-_]/g, ''); // Allow only alphanumeric, dash, and underscore
+}
         placeholder="Enter File ID"
       />
       <button onClick={handleDownload}>Download</button>
