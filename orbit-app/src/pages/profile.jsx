@@ -15,10 +15,13 @@ export const deleteUser = async (userId) => {
   return response.data;
 };
 
-export const fetchUserProfile = async (userId) => {
+async (userId) => {
+  if (!/^[a-zA-Z0-9_-]+$/.test(userId)) {
+    throw new Error('Invalid userId format');
+  }
   const response = await axios.get(`${BASE_URL}/get-user/${userId}`);
   return response.data;
-};
+}
 
 function Profile() {
   const [userData, setUserData] = useState({});
