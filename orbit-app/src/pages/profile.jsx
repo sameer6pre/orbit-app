@@ -52,7 +52,15 @@ function Profile() {
         type="text"
         placeholder="Enter User ID"
         value={userId}
-        onChange={(e) => setUserId(e.target.value)}
+(e) => {
+  const sanitizedValue = sanitizeInput(e.target.value); // Ensure input is sanitized
+  setUserId(sanitizedValue);
+}
+
+function sanitizeInput(input) {
+  // Example sanitization function
+  return input.replace(/<[^>]*>?/gm, ''); // Removes HTML tags
+}
       />
 
       <button onClick={handleDelete}>
