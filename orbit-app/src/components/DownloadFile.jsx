@@ -5,8 +5,12 @@ function DownloadFile() {
   const [fileData, setFileData] = useState(null);
   const [fileId, setFileId] = useState('');
 
-  const handleDownload = async () => {
+async () => {
     try {
+      if (!/^[a-zA-Z0-9_-]+$/.test(fileId)) {
+        throw new Error('Invalid file ID format.');
+      }
+
       const response = await axios.get(`${BASE_URL}/${fileId}`);
 
       setFileData(response.data);
@@ -19,7 +23,7 @@ function DownloadFile() {
       console.error('Error downloading file:', error);
       alert('Failed to download the file. Please try again.');
     }
-  };
+  }
 
   return (
     <div>
