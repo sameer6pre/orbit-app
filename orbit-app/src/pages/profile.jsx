@@ -32,15 +32,15 @@ function Profile() {
     });
   }, [userId]);
 
-  const handleDelete = () => {
+() => {
     deleteUser(userId)
       .then((res) => {
         alert('User deleted successfully!');
       })
       .catch((err) => {
-        console.error('Error deleting user:', err);
+        console.error('An error occurred while deleting the user.'); // FIX: Avoid logging sensitive error details
       });
-  };
+  }
 
   return (
     <div>
