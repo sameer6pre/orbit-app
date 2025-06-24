@@ -17,18 +17,24 @@ function CommentsSection() {
       });
   }, []);
 
-  const handleSubmit = (e) => {
+(e) => {
     e.preventDefault();
-    axios.post(`${BASE_URL}/comments`, { comment })
+    const sanitizedComment = sanitizeInput(comment); // FIX: Sanitize the input before sending it to the server
+    axios.post(`${BASE_URL}/comments`, { comment: sanitizedComment })
       .then(response => {
         alert('Comment added!');
-        setCommentsList([...commentsList, { comment }]);
+        setCommentsList([...commentsList, { comment: sanitizedComment }]);
         setComment('');
       })
       .catch(error => {
         console.error('Error posting comment:', error);
       });
-  };
+  }
+
+function sanitizeInput(input) {
+    // Implement a proper sanitization function here
+    return input.replace(/<[^>]*>?/gm, ''); // Example: Remove HTML tags
+}
 
   return (
     <div>
