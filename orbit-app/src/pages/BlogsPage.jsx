@@ -49,7 +49,17 @@ function BlogsPage() {
         <textarea
           placeholder="Blog content"
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+(e) => {
+  const sanitizedValue = sanitizeInput(e.target.value); // Sanitize the input
+  setContent(sanitizedValue);
+}
+
+function sanitizeInput(input) {
+  // Example sanitization function
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(input));
+  return div.innerHTML;
+}
         />
         <button onClick={handleCreateBlog}>Create</button>
       </div>
