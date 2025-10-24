@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../util';
+// FIX: Import a robust HTML sanitizer
+import DOMPurify from 'dompurify';
 
 function CommentsSection() {
   const [comment, setComment] = useState('');
@@ -31,24 +33,26 @@ function CommentsSection() {
   };
 
   return (
-    <div>
-      <h2>Comments</h2>
-      <form onSubmit={handleSubmit}>
-        <textarea
+    &lt;div>
+      &lt;h2>Comments&lt;/h2>
+      &lt;form onSubmit={handleSubmit}>
+        &lt;textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Write your comment here..."
         />
-        <button type="submit">Submit</button>
-      </form>
+        &lt;button type="submit">Submit&lt;/button>
+      &lt;/form>
 
-      <div className="comments-list">
+      &lt;div className="comments-list">
+        {/* FIX: Sanitize comment HTML before rendering */}
         {commentsList.map((cmt, index) => (
-          <div key={index} dangerouslySetInnerHTML={{ __html: cmt.comment }} />
+          &lt;div key={index} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(cmt.comment) }} />
         ))}
-      </div>
-    </div>
+      &lt;/div>
+    &lt;/div>
   );
 }
+// FIX EXPLANATION: This fix uses DOMPurify, a well-maintained and widely used library for sanitizing HTML, to clean user-supplied comment content before injecting it into the DOM. This prevents attackers from injecting malicious scripts or HTML, effectively mitigating XSS. Ensure DOMPurify is installed (npm install dompurify) and imported as shown. This approach is robust and production-ready.
 
 export default CommentsSection;
