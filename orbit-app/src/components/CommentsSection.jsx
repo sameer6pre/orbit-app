@@ -43,9 +43,16 @@ function CommentsSection() {
       </form>
 
       <div className="comments-list">
-        {commentsList.map((cmt, index) => (
-          <div key={index} dangerouslySetInnerHTML={{ __html: cmt.comment }} />
-        ))}
+(cmt, index) => (
+  <div key={index}>
+    {sanitizeHTML(cmt.comment)}
+  </div>
+)
+
+// Ensure to use a robust HTML sanitization library, such as DOMPurify, to clean the input before rendering it into the DOM.
+// Example:
+// import DOMPurify from 'dompurify';
+// const sanitizeHTML = (html) => DOMPurify.sanitize(html);
       </div>
     </div>
   );
