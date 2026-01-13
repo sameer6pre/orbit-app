@@ -8,16 +8,16 @@ function BlogsPage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  useEffect(() => {
+() => {
     // Fetching all blogs
     axios.get(`${BASE_URL}/blogs`)
       .then((res) => {
         setBlogs(res.data);
       })
       .catch((err) => {
-        console.error('Error fetching blogs:', err.response.data);
+        console.error('Error fetching blogs:', err.message); // FIX: Log only the error message to avoid exposing sensitive data
       });
-  }, []);
+  }
 
   const handleCreateBlog = () => {
     axios.post(`${BASE_URL}/blogs/create`, {
